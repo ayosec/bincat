@@ -4,6 +4,14 @@ use std::process;
 fn main() {
     let mut buf = [0; 4096];
 
+    let (escape_prefix, escape_suffix) = if atty::is(atty::Stream::Stdout) {
+        (&["\x1b[32m", "\x1b[33m"][..], "\x1b[m")
+    } else {
+        (&["<"][..], ">")
+    };
+
+    let mut escape_prefix = escape_prefix.iter().cycle();
+
     let stdin = io::stdin();
     let mut reader = stdin.lock();
 
@@ -21,7 +29,13 @@ fn main() {
             if (32..=128).contains(byte) || byte.is_ascii_whitespace() {
                 res = writer.write(&[*byte]).map(|_| ());
             } else {
-                res = write!(&mut writer, "<{:02X}>", *byte);
+                res = write!(
+                    &mut writer,
+                    "{}{:02X}{}",
+                    escape_prefix.next().unwrap_or(&""),
+                    *byte,
+                    escape_suffix
+                );
             }
 
             if let Err(e) = res {
