@@ -1,7 +1,10 @@
 [package]
 name = "bincat"
 version = "0.1.0"
+authors = ["ayosec@gmail.com"]
 edition = "2018"
+description = "Escape non-printable ASCII characters"
+license = "Apache-2.0"
 
 [dependencies]
 atty = "0.2"
