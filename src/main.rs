@@ -5,7 +5,7 @@ fn main() {
     let mut buf = [0; 4096];
 
     let (escape_prefix, escape_suffix) = if atty::is(atty::Stream::Stdout) {
-        (&["\x1b[32m", "\x1b[33m"][..], "\x1b[m")
+        (&["\x1b[7m", "\x1b[7;34m"][..], "\x1b[m")
     } else {
         (&["<"][..], ">")
     };
