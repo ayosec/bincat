@@ -26,7 +26,7 @@ fn main() {
         for byte in &buf[..len] {
             let res;
 
-            if (32..=128).contains(byte) || byte.is_ascii_whitespace() {
+            if (32..=128).contains(byte) || *byte == b'\n' {
                 res = writer.write(&[*byte]).map(|_| ());
             } else {
                 res = write!(
