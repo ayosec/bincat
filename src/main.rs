@@ -1,5 +1,9 @@
+mod ascii;
+
 use std::io::{self, BufWriter, Read, Write};
 use std::process;
+
+use ascii::EscapedChar;
 
 fn main() {
     let mut buf = [0; 4096];
@@ -31,9 +35,9 @@ fn main() {
             } else {
                 res = write!(
                     &mut writer,
-                    "{}{:02X}{}",
+                    "{}{}{}",
                     escape_prefix.next().unwrap_or(&""),
-                    *byte,
+                    EscapedChar(*byte),
                     escape_suffix
                 );
             }
